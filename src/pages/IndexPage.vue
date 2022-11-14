@@ -16,7 +16,6 @@
 								 v-model="dispatch.number"
 								 placeholder="Número do comprovante de despacho da mala"
 								 class="inputs"
-								 value={{code}}
 								 dense/>
 						<div class="lastName">
 							<label for="lastName">Sobrenome</label>
@@ -217,6 +216,7 @@ export default defineComponent({
 		onDetected (data) {
 			this.code = data.codeResult.code
 			this.cameraStatus = 0
+			this.dispatch.number = data.codeResult.code
 			this.onStop()
 		},
 		onStop () {
