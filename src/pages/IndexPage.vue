@@ -16,6 +16,7 @@
 								 v-model="dispatch.number"
 								 placeholder="Número do comprovante de despacho da mala"
 								 class="inputs"
+								 value={{code}}
 								 dense/>
 						<div class="lastName">
 							<label for="lastName">Sobrenome</label>
@@ -26,9 +27,8 @@
 							<h2>ou ative a câmera para ler o código de barras</h2>
 						</div>
 
-<!--						<div class="text-h6" v-if="code">Codigo: {{ code }}</div>-->
 						<div class="camera">
-							<q-btn class="btnBarCode" unelevated  @click="$router.push('/Leitor')">
+							<q-btn class="btnBarCode" unelevated  @click="iniciarLeitor()">
 								<img src="~/assets/home/barCode.svg" alt="Código de barras">
 								Leitor de código de barras
 							</q-btn>
@@ -42,13 +42,37 @@
 					</form>
 				</div>
 			</div>
+
+			<kinesis-container v-show="cameraStatus === 1" class="leitor">
+				<kinesis-element type="rotate" :strength="20">
+					<q-page class="flex flex-center " >
+						<div id="scan" v-show="cameraStatus === 1"></div>
+						<q-page-sticky position="bottom-right" :offset="[18, 18]">
+							<q-btn  icon="cancel" color="negative" label="Fechar Leitor" v-show="cameraStatus === 1" @click="onStop" />
+						</q-page-sticky>
+					</q-page>
+				</kinesis-element>
+			</kinesis-container>
+
 		</q-page-container>
 	</div>
 </template>
 
 <style scoped lang="scss">
+.leitor {
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	z-index: 5;
+
+	#scan {
+		width: 100%;
+		height: 100%;
+	}
+}
 .homePage {
 	width: 80vw;
+	height: 100vh;
 
 	.tracking {
 		text-align: center;
@@ -144,6 +168,7 @@
 import { defineComponent } from "vue";
 import Quagga from 'quagga'; // ES6
 // const Quagga = require('quagga').default;
+import VueKinesis from 'vue-kinesis'
 
 export default defineComponent({
 	name: "IndexPage",
@@ -164,10 +189,10 @@ export default defineComponent({
 				inputStream: {
 					name: 'Live',
 					type: 'LiveStream',
-					// constraints: {
-					//   width: 300,
-					//   height: 300
-					// },
+					constraints: {
+						width: window.innerWidth,
+						height: window.innerHeight
+					},
 					target: document.querySelector('#scan')
 				},
 				frequency: 10,
