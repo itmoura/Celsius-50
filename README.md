@@ -1,6 +1,10 @@
 # Celsius 50 (celsius-50)
 
-A Quasar Project
+Projeto desenvolvido para o Hackathon da Visa na Campus Party SP 2022
+Trata-se de uma aplicação PWA, buscamos essa solução pelo fato do usuário não ser obrigado a baixar o aplicativo, além disso os custos para hospedar o mesmo é significativamente menor, o que possibilita mais recursos para melhorar outras funcionalidades.
+
+Link da aplicação:
+https://celsius-50.vercel.app/#/
 
 ## Install the dependencies
 
@@ -38,6 +42,3 @@ npm run format
 quasar build
 ```
 
-### Customize the configuration
-
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
