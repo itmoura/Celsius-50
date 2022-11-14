@@ -26,8 +26,9 @@
 							<h2>ou ative a câmera para ler o código de barras</h2>
 						</div>
 
+<!--						<div class="text-h6" v-if="code">Codigo: {{ code }}</div>-->
 						<div class="camera">
-							<q-btn class="btnBarCode" unelevated >
+							<q-btn class="btnBarCode" unelevated  @click="$router.push('/Leitor')">
 								<img src="~/assets/home/barCode.svg" alt="Código de barras">
 								Leitor de código de barras
 							</q-btn>
@@ -48,7 +49,6 @@
 <style scoped lang="scss">
 .homePage {
 	width: 80vw;
-
 
 	.tracking {
 		text-align: center;
@@ -142,6 +142,8 @@
 
 <script>
 import { defineComponent } from "vue";
+import Quagga from 'quagga'; // ES6
+// const Quagga = require('quagga').default;
 
 export default defineComponent({
 	name: "IndexPage",
@@ -150,7 +152,52 @@ export default defineComponent({
 		return {
 			dispatch: { number: "", lastname: "" },
 			model: "",
+			code: '',
+			dialog: false,
+			cameraStatus: 0
 		};
+	},
+	methods: {
+		iniciarLeitor () {
+			this.cameraStatus = 1
+			Quagga.init({
+				inputStream: {
+					name: 'Live',
+					type: 'LiveStream',
+					// constraints: {
+					//   width: 300,
+					//   height: 300
+					// },
+					target: document.querySelector('#scan')
+				},
+				frequency: 10,
+				decoder: {
+					readers: [
+						'ean_reader'
+					],
+					multiple: false
+				},
+				numOfWorkers: navigator.hardwareConcurrency
+				// locate: false
+			}, (err) => {
+				if (err) {
+					console.log(err)
+					return
+				}
+				console.log('Initialization finished. Ready to start')
+				Quagga.start()
+				Quagga.onDetected(this.onDetected)
+			})
+		},
+		onDetected (data) {
+			this.code = data.codeResult.code
+			this.cameraStatus = 0
+			this.onStop()
+		},
+		onStop () {
+			Quagga.stop()
+			this.cameraStatus = 0
+		}
 	}
 });
 </script>

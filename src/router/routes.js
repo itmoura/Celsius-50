@@ -27,6 +27,13 @@ const routes = [
 			{ path: "", component: () => import("pages/SuccessPage.vue") },
 		],
 	},
+	{
+		path: "/Leitor",
+		component: () => import("layouts/NullLayout.vue"),
+		children: [
+			{ path: "", component: () => import("pages/LeitorPage.vue") },
+		],
+	},
 	// Always leave this as last one,
 	// but you can also remove it
 	{

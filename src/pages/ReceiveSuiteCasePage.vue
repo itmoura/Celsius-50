@@ -49,15 +49,6 @@
 									ENVIAR
 								</q-btn>
 							</div>
-<!--							<q-select-->
-<!--								label="Scale"-->
-<!--								transition-show="scale"-->
-<!--								transition-hide="scale"-->
-<!--								filled-->
-<!--								v-model="receiveSuiteCase.cia"-->
-<!--								:options="optionsSelect"-->
-<!--								style="width: 250px"-->
-<!--							/>-->
 						</form>
 					</div>
 				</div>
